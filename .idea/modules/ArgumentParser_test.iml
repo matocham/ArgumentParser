@@ -11,9 +11,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ArgumentParser_main" />
-    <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.3.11" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.1-groovy-2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: net.bytebuddy:byte-buddy:1.6.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.objenesis:objenesis:2.5.1" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="ArgumentParser_main" />
 </module>
