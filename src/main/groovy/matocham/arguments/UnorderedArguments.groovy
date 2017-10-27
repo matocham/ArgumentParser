@@ -1,25 +1,24 @@
 package matocham.arguments
 
-import matocham.arguments.args.Argument
-
-class UnorderedArguments extends Arguments{
+class UnorderedArguments extends Arguments {
     @Override
     def parse(String commandLine) throws ArgumentsException {
-        String[] tokens = commandLine.trim().split(VARIABLE_START_REGEX)
+        Collection<String> tokens = commandLine.trim().split(VARIABLE_START_REGEX).findAll { !it.trim().isEmpty() }
         tokens.each { token ->
+            token = token.trim()
             def tokenConsumed = false
             arguments.each { arg ->
-                if(token.startsWith(arg.name)){
+                if (token.matches(arg.getStartingRegex())) {
                     tokenConsumed = true
-                    argument.parse(token)
+                    arg.parse(token)
                 }
             }
-            if(!tokenConsumed){
+            if (!tokenConsumed) {
                 throw new ArgumentsException("Expression $token does not match anything")
             }
         }
         arguments.each {
-            if(it.value.isEmpty() && it.required){
+            if (it.value.isEmpty() && it.required) {
                 throw new ArgumentsException("Argument $it.name is required")
             }
         }

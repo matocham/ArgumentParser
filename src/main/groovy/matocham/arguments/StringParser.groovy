@@ -51,9 +51,8 @@ class StringParser extends Parser {
             throw new ParseException("Name and delimiter can't contain / character")
         }
         def name = nameAndDelimiter[0].trim()
-        if (name.contains(" ") || name.contains("\t") || name.contains("\n")) {
-            throw new ParseException("Name can't contain white characters");
-        }
+        checkNameValue(name)
+
         argument.setName(name)
         if (nameAndDelimiter.length == 2) {
             def delimiter = nameAndDelimiter[1].trim()

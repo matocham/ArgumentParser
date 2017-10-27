@@ -4,7 +4,8 @@ import matocham.arguments.ArgumentsException
 
 abstract class Argument {
     private static def ESCAPED_PATTERN = ~/'.*'/
-
+    private static def STARTING_LONG_PATTERN = /^--/
+    private static def STARTING_SHORT_PATTERN = /^-/
     String delimiter = ""
     String name
     List<String> value = []
@@ -24,7 +25,7 @@ abstract class Argument {
         parseValue(value)
     }
 
-    abstract def parseValue(String argValue) throws ArgumentsException
+    abstract def parseValue(String argValue)
 
     private def getValueFromToken(String stringArgument) {
         if (delimiter.isEmpty()) {
@@ -34,13 +35,13 @@ abstract class Argument {
         }
     }
 
-    private def checkDelimiter(String argValue) throws ArgumentsException{
-        if (!delimiter.isEmpty() && argValue.charAt(arg.name.length()) != delimiter) {
+    private def checkDelimiter(String argValue) throws ArgumentsException {
+        if (!delimiter.isEmpty() && argValue.charAt(name.length()) != delimiter) {
             throw new ArgumentsException("Delimiter $delimiter was not found in $argValue")
         }
     }
 
-    private def validateValue(String value) throws ArgumentsException {
+    private def validateValue(String value) {
         if (value == null || !value) {
             return true
         }
@@ -50,7 +51,7 @@ abstract class Argument {
         return true
     }
 
-    private def stripQuotes(String value){
+    private def stripQuotes(String value) {
         if (value.matches(ESCAPED_PATTERN)) {
             value = value.substring(1, value.length() - 1)
         }
@@ -58,4 +59,12 @@ abstract class Argument {
     }
 
     protected abstract def build()
+
+    def getStartingRegex() {
+        if(name.length() == 1){
+            return STARTING_SHORT_PATTERN + name
+        } else {
+            return STARTING_LONG_PATTERN + name
+        }
+    }
 }
