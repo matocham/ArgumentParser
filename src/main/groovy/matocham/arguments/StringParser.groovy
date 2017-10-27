@@ -5,9 +5,12 @@ import matocham.arguments.args.Argument
 import java.util.regex.Pattern
 
 class StringParser extends Parser {
-    private static def ARGUMENT_PATTERN = ~/([a-zA-Z0-9_]+?(\/.)?\[.+?\])/
+    private static def ARGUMENT_PATTERN = ~/([a-zA-Z0-9_]+?(\/.*?)?\[.+?\])\*?!?/
     private static def CLASS_DEF_PATTERN = ~/(?<=\[).+(?=\])/
     private static def ARGUMENTS_PATTERN = ~/(?<=\().+(?=\))/
+    private static def ORDERED_MARK = ">"
+    private static String MULTIVALUED_CHARACTER = "*"
+    private static String REQUIRED_MARK = "!"
 
     StringParser(String argumentsString) {
         super(argumentsString)
@@ -15,18 +18,25 @@ class StringParser extends Parser {
 
     @Override
     Arguments parse() throws ParseException {
-        def groups = argumentsString.findAll(ARGUMENT_PATTERN)
+        def isOrdered = argumentsString.endsWith(ORDERED_MARK)
         def argumentsStringAfterParse = argumentsString
+        Arguments arguments
 
+        if (isOrdered) {
+            argumentsStringAfterParse = argumentsString.substring(0, argumentsString.length() - 1)
+            arguments = new OrderedArguments()
+        } else {
+            arguments = new UnorderedArguments()
+        }
+        def groups = argumentsStringAfterParse.findAll(ARGUMENT_PATTERN)
         if (!groups) {
             throw new ArgumentsException("There is no arguments to parse!")
         }
-        Arguments arguments = new OrderedArguments()
         groups.each {
             arguments.addArgument(parseArgument(it))
-            argumentsStringAfterParse = argumentsStringAfterParse.replaceAll(Pattern.quote(it),"")
+            argumentsStringAfterParse = argumentsStringAfterParse.replaceAll(Pattern.quote(it), "")
         }
-        if(argumentsStringAfterParse.trim()){
+        if (argumentsStringAfterParse.trim()) {
             throw new ParseException("Pattern parsed, but some text left: $argumentsStringAfterParse")
         }
         return arguments
@@ -41,16 +51,32 @@ class StringParser extends Parser {
             throw new ParseException("Name and delimiter can't contain / character")
         }
         def name = nameAndDelimiter[0].trim()
+        if (name.contains(" ") || name.contains("\t") || name.contains("\n")) {
+            throw new ParseException("Name can't contain white characters");
+        }
         argument.setName(name)
         if (nameAndDelimiter.length == 2) {
             def delimiter = nameAndDelimiter[1].trim()
             if (delimiter.length() != 1) {
                 throw new ParseException("Delimiter should contain only one character!")
             }
-            if(delimiter == '_'){
+            if (delimiter == '_') {
                 delimiter = ' '
             }
-            argument.setDelimiter(delimiter)
+            argument.delimiter = delimiter
+        }
+
+        def modifiers = stringToParse.substring(stringToParse.lastIndexOf("]")+1)
+        if (modifiers.contains(MULTIVALUED_CHARACTER)) {
+            argument.multivalued = true
+            modifiers = modifiers.replaceAll(Pattern.quote(MULTIVALUED_CHARACTER), "")
+        }
+        if (modifiers.contains(REQUIRED_MARK)) {
+            argument.required = true
+            modifiers = modifiers.replaceAll(Pattern.quote(REQUIRED_MARK), "")
+        }
+        if (!modifiers.isEmpty()) {
+            throw new ArgumentsException("Unknown modifier: $modifiers")
         }
         return argument
     }
@@ -63,7 +89,7 @@ class StringParser extends Parser {
             arguments.split(',').each {
                 def keyAndValue = it.split('=')
                 if (keyAndValue.length != 2) {
-                    throw new ParseException("Argument properties should be key value pair, sepereated by =")
+                    throw new ParseException("Argument properties should be key=value pair")
                 }
                 argumentsMap[keyAndValue[0].trim()] = keyAndValue[1].trim()
             }
