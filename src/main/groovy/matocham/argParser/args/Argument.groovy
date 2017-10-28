@@ -1,6 +1,6 @@
-package matocham.arguments.args
+package matocham.argParser.args
 
-import matocham.arguments.ArgumentsException
+import matocham.argParser.exceptions.ArgumentsException
 
 abstract class Argument {
     private static def ESCAPED_PATTERN = ~/'.*'/

@@ -1,6 +1,7 @@
-package matocham.arguments
+package matocham.argParser.arguments
 
-import matocham.arguments.args.Argument
+import matocham.argParser.exceptions.ArgumentsException
+import matocham.argParser.args.Argument
 
 class UnorderedArguments extends Arguments {
     @Override

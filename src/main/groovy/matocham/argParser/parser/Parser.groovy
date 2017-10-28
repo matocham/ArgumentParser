@@ -1,6 +1,7 @@
-package matocham.arguments
+package matocham.argParser.parser
 
-import matocham.arguments.args.Argument
+import matocham.argParser.args.Argument
+import matocham.argParser.arguments.Arguments
 
 abstract class Parser {
     private static def FORBIDDEN_NAME_CHARACTERS = ["-", "\$", " ", "\t", "\n"]

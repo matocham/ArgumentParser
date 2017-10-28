@@ -1,6 +1,10 @@
-package matocham.arguments
+package matocham.argParser.parser
 
-import matocham.arguments.args.Argument
+import matocham.argParser.exceptions.ArgumentsException
+import matocham.argParser.args.Argument
+import matocham.argParser.arguments.Arguments
+import matocham.argParser.arguments.OrderedArguments
+import matocham.argParser.arguments.UnorderedArguments
 
 import java.util.regex.Pattern
 
