@@ -4,7 +4,7 @@ class OrderedArguments extends Arguments {
 
     @Override
     def parse(String commandLine) throws ArgumentsException {
-        Collection<String> tokens = commandLine.trim().split(VARIABLE_START_REGEX).findAll { !it.trim().isEmpty() }
+        Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
         int tokenIndex = 0
         arguments.each { arg ->
             def tokenConsumed = false

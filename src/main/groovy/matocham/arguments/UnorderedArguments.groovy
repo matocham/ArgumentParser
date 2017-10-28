@@ -3,7 +3,7 @@ package matocham.arguments
 class UnorderedArguments extends Arguments {
     @Override
     def parse(String commandLine) throws ArgumentsException {
-        Collection<String> tokens = commandLine.trim().split(VARIABLE_START_REGEX).findAll { !it.trim().isEmpty() }
+        Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
         tokens.each { token ->
             token = token.trim()
             def tokenConsumed = false

@@ -6,6 +6,7 @@ abstract class Argument {
     private static def ESCAPED_PATTERN = ~/'.*'/
     private static def STARTING_LONG_PATTERN = /^--/
     private static def STARTING_SHORT_PATTERN = /^-/
+    public static final String ALL_CHARS_REGEX = ".*"
     String delimiter = ""
     String name
     List<String> value = []
@@ -16,6 +17,7 @@ abstract class Argument {
     }
 
     def parse(String argValue) throws ArgumentsException {
+        argValue = stripDashes(argValue)
         checkDelimiter(argValue)
         String value = getValueFromToken(argValue)
         if (!validateValue(value)) {
@@ -23,6 +25,14 @@ abstract class Argument {
         }
         value = stripQuotes(value)
         parseValue(value)
+    }
+
+    def stripDashes(String arg) {
+        def index = 0
+        while(index< arg.length() && arg.charAt(index) == '-'){
+            index++
+        }
+        arg.substring(index)
     }
 
     abstract def parseValue(String argValue)
@@ -62,9 +72,9 @@ abstract class Argument {
 
     def getStartingRegex() {
         if(name.length() == 1){
-            return STARTING_SHORT_PATTERN + name
+            return STARTING_SHORT_PATTERN + name+ ALL_CHARS_REGEX
         } else {
-            return STARTING_LONG_PATTERN + name
+            return STARTING_LONG_PATTERN + name+ ALL_CHARS_REGEX
         }
     }
 }
