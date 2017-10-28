@@ -29,7 +29,7 @@ abstract class Argument {
 
     def stripDashes(String arg) {
         def index = 0
-        while(index< arg.length() && arg.charAt(index) == '-'){
+        while (index < arg.length() && arg.charAt(index) == '-') {
             index++
         }
         arg.substring(index)
@@ -71,10 +71,10 @@ abstract class Argument {
     protected abstract def build()
 
     def getStartingRegex() {
-        if(name.length() == 1){
-            return STARTING_SHORT_PATTERN + name+ ALL_CHARS_REGEX
+        if (name.length() < 2) {
+            return STARTING_SHORT_PATTERN + name + delimiter + ALL_CHARS_REGEX
         } else {
-            return STARTING_LONG_PATTERN + name+ ALL_CHARS_REGEX
+            return STARTING_LONG_PATTERN + name + delimiter + ALL_CHARS_REGEX
         }
     }
 }

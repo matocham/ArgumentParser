@@ -1,16 +1,20 @@
 package matocham.arguments
 
+import matocham.arguments.args.Argument
+
 class UnorderedArguments extends Arguments {
     @Override
     def parse(String commandLine) throws ArgumentsException {
+        arguments.sort({a,b -> (b.name <=> a.name) })
         Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
         tokens.each { token ->
             token = token.trim()
             def tokenConsumed = false
-            arguments.each { arg ->
-                if (token.matches(arg.getStartingRegex())) {
+            for ( Argument argument : arguments){
+                if (token.matches(argument.getStartingRegex())) {
                     tokenConsumed = true
-                    arg.parse(token)
+                    argument.parse(token)
+                    break
                 }
             }
             if (!tokenConsumed) {

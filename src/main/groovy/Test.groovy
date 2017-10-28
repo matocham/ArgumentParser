@@ -3,8 +3,8 @@ import matocham.arguments.StringParser
 
 class Test {
     public static void main(String[] args) {
-        Arguments arguments = new StringParser("a/[string(maxLength=1000)]* b/=[string()]! ").parse()
-        arguments.parse("-axxx -b='ala ma kota' -a123")
+        Arguments arguments = new StringParser("[string()]! a/[string(maxLength=1000)]*  ").parse()
+        arguments.parse("-a123 -'ala ma kota' -a123 -aco_tam")
         println arguments.getArgument("a").value
     }
 }

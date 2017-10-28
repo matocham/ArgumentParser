@@ -23,12 +23,12 @@ abstract class Arguments {
         List indexes = getDashIndexes(commandLineArguments)
 
         for (def i = 0; i < indexes.size(); i++) {
-            def startingCharIndex = indexes.get(i)
-            while (i + 1 < indexes.size() && indexes.get(i + 1) == startingCharIndex + 1) {
+            def startingCharIndex = indexes[i]
+            while (i + 1 < indexes.size() && indexes[i + 1] == startingCharIndex + 1) {
                 i++ // if next character is also '-' jump to next position
             }
             def endingCharIndex = startingCharIndex
-            def j = indexes.get(i) + 1
+            def j = indexes[i] + 1
             for (; j < commandLineArguments.length(); j++) { // start from character after '-'
                 if (commandLineArguments.charAt(j) == "'") { // characters inside '' are escaped
                     j++ // move j to next character, so it won't point at "'"
@@ -42,7 +42,7 @@ abstract class Arguments {
                     endingCharIndex = j+1
                 }
             }
-            while (i + 1 < indexes.size() && indexes.get(i + 1) < endingCharIndex) {
+            while (i + 1 < indexes.size() && indexes[i + 1] < endingCharIndex) {
                 i++ // skip all '-' characters that were included into current token
             }
             if(j == commandLineArguments.length()){ // if end of string was reached endingCharIndex have to be set
