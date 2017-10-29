@@ -4,7 +4,7 @@ import matocham.argParser.args.Argument
 import matocham.argParser.arguments.Arguments
 
 abstract class Parser {
-    private static def FORBIDDEN_NAME_CHARACTERS = ["-", "\$", " ", "\t", "\n"]
+    private static def FORBIDDEN_NAME_CHARACTERS = [/*"-",*/ "\$", " ", "\t", "\n"]
 
     private static Properties lookup = new Properties()
 

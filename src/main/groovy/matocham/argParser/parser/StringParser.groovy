@@ -9,8 +9,8 @@ import matocham.argParser.arguments.UnorderedArguments
 import java.util.regex.Pattern
 
 class StringParser extends Parser {
-    private static def ARGUMENT_PATTERN = ~/([a-zA-Z0-9_]*?(\/.*?)?\[.+?\])\*?!?/
-    private static def CLASS_DEF_PATTERN = ~/(?<=\[).+(?=\])/
+    private static def ARGUMENT_PATTERN = ~/([a-zA-Z0-9_]*?-?[a-zA-Z0-9_]*?(\/.*?)?\[.+?])\*?!?/
+    private static def CLASS_DEF_PATTERN = ~/(?<=\[).+(?=])/
     private static def ARGUMENTS_PATTERN = ~/(?<=\().+(?=\))/
     private static def ORDERED_MARK = ">"
     private static String MULTIVALUED_CHARACTER = "*"

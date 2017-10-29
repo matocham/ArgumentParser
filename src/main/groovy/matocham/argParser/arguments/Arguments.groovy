@@ -33,7 +33,11 @@ abstract class Arguments {
             for (; j < commandLineArguments.length(); j++) { // start from character after '-'
                 if (commandLineArguments.charAt(j) == "'") { // characters inside '' are escaped
                     j++ // move j to next character, so it won't point at "'"
-                    for (;j < commandLineArguments.length() && commandLineArguments.charAt(j) != "'"; j++); //got to the end of escaped block
+                    def closingCharIndex = commandLineArguments.indexOf("'",j)
+                    if(closingCharIndex == -1){
+                        throw new ArgumentsException(" \"'\" closing tag not found")
+                    }
+                    j = closingCharIndex //go to the end of escaped block
                 }
                 if (commandLineArguments.charAt(j) == '-' && commandLineArguments.charAt(j - 1) == ' ') {
                     endingCharIndex = j
