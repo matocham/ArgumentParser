@@ -4,12 +4,12 @@ import matocham.argParser.exceptions.ArgumentsException
 
 import java.util.regex.Pattern
 
-class StringArgument extends Argument {
+class StringArgument extends Argument<String> {
     String maxLength = "1000"
     String pattern = /.*/
 
-    Integer valueMaxLength
-    Pattern valuePattern
+    private Integer valueMaxLength
+    private Pattern valuePattern
 
     @Override
     def parseValue(String stringArgument) throws ArgumentsException {
@@ -18,9 +18,6 @@ class StringArgument extends Argument {
         }
         if (!stringArgument.matches(valuePattern)) {
             throw new ArgumentsException("Argument $name does not match pattern ${pattern.toString()}")
-        }
-        if (!multivalued && !value.isEmpty()) {
-            throw new ArgumentsException("Can't add second value to argument, that is not multivalued")
         }
         value.add(stringArgument)
     }

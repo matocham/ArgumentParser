@@ -2,14 +2,14 @@ package matocham.argParser.args
 
 import matocham.argParser.exceptions.ArgumentsException
 
-abstract class Argument {
+abstract class Argument<T> {
     private static def ESCAPED_PATTERN = ~/'.*'/
     private static def STARTING_LONG_PATTERN = /^--/
     private static def STARTING_SHORT_PATTERN = /^-/
     public static final String ALL_CHARS_REGEX = ".*"
     String delimiter = ""
     String name
-    List<String> value = []
+    private List<T> value = []
     Boolean multivalued = false
     Boolean required = false
 
@@ -21,13 +21,20 @@ abstract class Argument {
         checkDelimiter(argValue)
         String value = getValueFromToken(argValue)
         if (!validateValue(value)) {
-            throw new ArgumentsException("Arguments with white characters should be escaped using ''")
+            throw new ArgumentsException("Arguments with white characters should be escaped using '' ($argValue)")
         }
         value = stripQuotes(value)
+        canAddMultivalued() // if all validations were completed successfully, check if this is first value or if second can be added
         parseValue(value)
     }
 
-    def stripDashes(String arg) {
+    private def canAddMultivalued(){
+        if (!multivalued && !value.isEmpty()) {
+            throw new ArgumentsException("Can't add second value to argument, that is not multivalued")
+        }
+    }
+
+    private def stripDashes(String arg) {
         def index = 0
         while (index < arg.length() && arg.charAt(index) == '-') {
             index++
@@ -76,5 +83,9 @@ abstract class Argument {
         } else {
             return STARTING_LONG_PATTERN + name + delimiter + ALL_CHARS_REGEX
         }
+    }
+
+    List<String> getValue() {
+        return value
     }
 }
