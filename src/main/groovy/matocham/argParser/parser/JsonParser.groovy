@@ -44,7 +44,7 @@ class JsonParser extends Parser {
         checkNameValue(name)
         delimiter = preprocesDelimiter(delimiter)
 
-        Map<String, String> constructorArguments = new HashMap<>()
+        Map constructorArguments = [:]
         argObject.each { key, val ->
             if (!(key in COMMON_FIELDS)) {
                 constructorArguments."$key" = val

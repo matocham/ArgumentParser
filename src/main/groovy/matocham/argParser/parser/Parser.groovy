@@ -15,7 +15,7 @@ abstract class Parser {
 
     abstract Arguments parse() throws ParseException
 
-    protected Argument getArgumentInstance(String type, Map argsMap = null) {
+    protected Argument getArgumentInstance(String type, Map argsMap = [:]) {
         def lookupType = getFromLookup(type)
         if (lookupType != null) {
             type = lookupType
