@@ -1,0 +1,31 @@
+{
+  "ordered": false,
+  "arguments": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "productId",
+      "delimiter": "_"
+    },
+    {
+      "type": "bool",
+      "required": true,
+      "name": "withShipping"
+    },
+    {
+      "type": "int",
+      "max": "20",
+      "min": "10",
+      "multivalued": true,
+      "required": true,
+      "name": "quantity",
+      "delimiter": "="
+    },
+    {
+      "type": "double",
+      "max": "99.99",
+      "name": "price",
+      "delimiter": "_"
+    }
+  ]
+}

@@ -2,19 +2,15 @@ package matocham.argParser.parser
 
 import matocham.argParser.args.Argument
 import matocham.argParser.arguments.Arguments
+import matocham.argParser.exceptions.ArgumentsException
 
 abstract class Parser {
-    private static def FORBIDDEN_NAME_CHARACTERS = [/*"-",*/ "\$", " ", "\t", "\n"]
+    private static def FORBIDDEN_NAME_CHARACTERS = ["\$", " ", "\t", "\n", "/"]
 
     private static Properties lookup = new Properties()
 
     static {
         lookup.load(Parser.class.getResourceAsStream("/argumentMapping.properties"))
-    }
-    protected String argumentsString
-
-    Parser(String argumentsString) {
-        this.argumentsString = argumentsString
     }
 
     abstract Arguments parse() throws ParseException
@@ -23,6 +19,9 @@ abstract class Parser {
         def lookupType = getFromLookup(type)
         if (lookupType != null) {
             type = lookupType
+        }
+        if (!type) {
+            throw new ArgumentsException("Class $type not found")
         }
         Argument instance
         if (argsMap == null) {
@@ -34,7 +33,7 @@ abstract class Parser {
         return instance
     }
 
-    private static String getFromLookup(value) {
+    private static String getFromLookup(String value) {
         return lookup.getProperty(value)
     }
 

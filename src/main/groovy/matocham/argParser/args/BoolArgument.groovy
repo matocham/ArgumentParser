@@ -27,6 +27,6 @@ class BoolArgument extends Argument<Boolean> {
         if (multivalued) {
             throw new ArgumentsException("Bool argument can't be set to multivalued")
         }
-        this.multivalued = multivalued
+        super.multivalued = multivalued
     }
 }

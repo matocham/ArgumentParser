@@ -30,7 +30,7 @@ abstract class Argument<T> {
 
     private def canAddMultivalued(){
         if (!multivalued && !value.isEmpty()) {
-            throw new ArgumentsException("Can't add second value to argument, that is not multivalued")
+            throw new ArgumentsException("Can't add second value to argument, that is not multivalued ($name)")
         }
     }
 

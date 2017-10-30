@@ -16,8 +16,10 @@ class StringParser extends Parser {
     private static String MULTIVALUED_CHARACTER = "*"
     private static String REQUIRED_MARK = "!"
 
+    protected String argumentsString
+
     StringParser(String argumentsString) {
-        super(argumentsString)
+        this.argumentsString = argumentsString
     }
 
     @Override
@@ -85,7 +87,12 @@ class StringParser extends Parser {
     }
 
     private Argument getArgumentFromString(String argument) {
-        def className = argument.substring(0, argument.indexOf('(')).trim()
+        def className
+        if(argument.contains("(")){
+            className = argument.substring(0, argument.indexOf('(')).trim()
+        } else {
+            className = argument.trim()
+        }
         def arguments = argument.find(ARGUMENTS_PATTERN)
         if (arguments) {
             def argumentsMap = new HashMap<String, String>()
