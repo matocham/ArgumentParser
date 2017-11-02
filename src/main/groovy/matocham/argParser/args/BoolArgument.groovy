@@ -10,7 +10,7 @@ class BoolArgument extends Argument<Boolean> {
         } else {
             if (argValue == "true" || argValue.toLowerCase() == "t" || argValue.toLowerCase() == "y") {
                 value.add(true)
-            } else if (argValue == "true" || argValue.toLowerCase() == "t" || argValue.toLowerCase() == "y") {
+            } else if (argValue == "false" || argValue.toLowerCase() == "f" || argValue.toLowerCase() == "n") {
                 value.add(false)
             } else {
                 throw new ArgumentsException("Unknown value: $argValue")

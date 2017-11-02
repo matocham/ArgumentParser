@@ -3,6 +3,8 @@ package matocham.argParser.arguments
 import matocham.argParser.exceptions.ArgumentsException
 
 class SpaceTokenizer implements Tokenizer{
+    private static def ESCAPED_PATTERN = ~/(".*")|('.*')/
+
     List<String> split(String commandLineArguments) {
         def tokens = []
         List indexes = getSpaceIndexes(commandLineArguments)
@@ -15,11 +17,11 @@ class SpaceTokenizer implements Tokenizer{
             def endingCharIndex = startingCharIndex
             def j = indexes[i] + 1
             for (; j < commandLineArguments.length(); j++) { // start from character after '-'
-                if (commandLineArguments.charAt(j) == "'") { // characters inside '' are escaped
+                if (commandLineArguments.charAt(j) == "\"") { // characters inside '' are escaped
                     j++ // move j to next character, so it won't point at "'"
-                    def closingCharIndex = commandLineArguments.indexOf("'", j)
+                    def closingCharIndex = commandLineArguments.indexOf("\"", j)
                     if (closingCharIndex == -1) {
-                        throw new ArgumentsException(" \"'\" closing tag not found")
+                        throw new ArgumentsException(" '\"'' closing tag not found")
                     }
                     j = closingCharIndex //go to the end of escaped block
                 }
@@ -37,7 +39,9 @@ class SpaceTokenizer implements Tokenizer{
             if (j == commandLineArguments.length()) { // if end of string was reached endingCharIndex have to be set
                 endingCharIndex = j
             }
-            tokens.add(commandLineArguments.substring(startingCharIndex, endingCharIndex).trim())
+            def token = commandLineArguments.substring(startingCharIndex, endingCharIndex).trim()
+            token = stripQuotes(token)
+            tokens.add(token)
         }
         return tokens.findAll { !it.trim().isEmpty() }
     }
@@ -50,5 +54,12 @@ class SpaceTokenizer implements Tokenizer{
             }
         }
         indexes
+    }
+
+    private def stripQuotes(String value) {
+        if (value.matches(ESCAPED_PATTERN)) {
+            value = value.substring(1, value.length() - 1)
+        }
+        return value
     }
 }

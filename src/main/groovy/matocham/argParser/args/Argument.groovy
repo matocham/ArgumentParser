@@ -3,7 +3,6 @@ package matocham.argParser.args
 import matocham.argParser.exceptions.ArgumentsException
 
 abstract class Argument<T> {
-    private static def ESCAPED_PATTERN = ~/'.*'/
     private static def STARTING_LONG_PATTERN = /^--/
     private static def STARTING_SHORT_PATTERN = /^-/
     public static final String ALL_CHARS_REGEX = ".*"
@@ -20,10 +19,6 @@ abstract class Argument<T> {
         argValue = stripDashes(argValue)
         checkDelimiter(argValue)
         String value = getValueFromToken(argValue)
-        if (!validateValue(value)) {
-            throw new ArgumentsException("Arguments with white characters should be escaped using '' ($argValue)")
-        }
-        value = stripQuotes(value)
         canAddMultivalued() // if all validations were completed successfully, check if this is first value or if second can be added
         parseValue(value)
     }
@@ -54,25 +49,8 @@ abstract class Argument<T> {
 
     private def checkDelimiter(String argValue) throws ArgumentsException {
         if (!delimiter.isEmpty() && argValue.charAt(name.length()) != delimiter) {
-            throw new ArgumentsException("Delimiter $delimiter was not found in $argValue")
+            throw new ArgumentsException("Delimiter '$delimiter' was not found in $argValue")
         }
-    }
-
-    private def validateValue(String value) {
-        if (value == null || !value) {
-            return true
-        }
-        if (value.contains(" ") || value.contains("\t") || value.contains("\n")) {
-            return value.matches(ESCAPED_PATTERN)
-        }
-        return true
-    }
-
-    private def stripQuotes(String value) {
-        if (value.matches(ESCAPED_PATTERN)) {
-            value = value.substring(1, value.length() - 1)
-        }
-        return value
     }
 
     protected abstract def build()
