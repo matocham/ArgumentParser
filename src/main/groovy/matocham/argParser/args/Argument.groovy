@@ -88,4 +88,8 @@ abstract class Argument<T> {
     List<String> getValue() {
         return value
     }
+
+    def isWhiteSpaceDelimiter(){
+        !delimiter.isEmpty() && delimiter.isAllWhitespace()
+    }
 }

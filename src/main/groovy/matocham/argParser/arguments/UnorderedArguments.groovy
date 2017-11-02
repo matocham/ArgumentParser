@@ -7,12 +7,21 @@ class UnorderedArguments extends Arguments {
     @Override
     def doParse(Collection<String> tokens) throws ArgumentsException {
         arguments.sort({ a, b -> (b.name <=> a.name) })
-        for (String token : tokens) {
-            token = token.trim()
+        for (int i = 0; i < tokens.size(); i++) {
             def tokenConsumed = false
             for (Argument argument : arguments) {
+                def token = tokens[i]
+                def whiteSpaceMerged = false
+
+                if (argument.isWhiteSpaceDelimiter() && i + 1 < tokens.size()) {
+                    token += " " + tokens[i + 1]
+                    whiteSpaceMerged = true
+                }
                 if (token.matches(argument.getStartingRegex())) {
                     tokenConsumed = true
+                    if (whiteSpaceMerged) {
+                        i++
+                    }
                     argument.parse(token)
                     break
                 }

@@ -15,7 +15,7 @@ abstract class Arguments {
 
     def parse(String commandLine) throws ArgumentsException {
         arguments.each { arguments.value.clear() }
-        doParse(new Tokenizer().split(commandLine))
+        doParse(new SpaceTokenizer().split(commandLine))
     }
 
     abstract protected def doParse(Collection<String> tokens) throws ArgumentsException
