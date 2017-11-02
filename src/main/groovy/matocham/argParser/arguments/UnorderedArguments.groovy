@@ -1,17 +1,16 @@
 package matocham.argParser.arguments
 
-import matocham.argParser.exceptions.ArgumentsException
 import matocham.argParser.args.Argument
+import matocham.argParser.exceptions.ArgumentsException
 
 class UnorderedArguments extends Arguments {
     @Override
-    def doParse(String commandLine) throws ArgumentsException {
-        arguments.sort({a,b -> (b.name <=> a.name) })
-        Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
-        tokens.each { token ->
+    def doParse(Collection<String> tokens) throws ArgumentsException {
+        arguments.sort({ a, b -> (b.name <=> a.name) })
+        for (String token : tokens) {
             token = token.trim()
             def tokenConsumed = false
-            for ( Argument argument : arguments){
+            for (Argument argument : arguments) {
                 if (token.matches(argument.getStartingRegex())) {
                     tokenConsumed = true
                     argument.parse(token)

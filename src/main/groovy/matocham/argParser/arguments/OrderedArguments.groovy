@@ -6,8 +6,7 @@ import matocham.argParser.args.Argument
 class OrderedArguments extends Arguments {
 
     @Override
-    def doParse(String commandLine) throws ArgumentsException {
-        Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
+    def doParse(Collection<String> tokens) throws ArgumentsException {
         int tokenIndex = 0
         for (def i = 0; i < arguments.size(); i++) {
             Argument arg = arguments[i]
