@@ -18,6 +18,11 @@ abstract class Arguments {
         doParse(new SpaceTokenizer().split(commandLine))
     }
 
+    def parse(String[] commandLine) throws ArgumentsException {
+        arguments.each { arguments.value.clear() }
+        doParse(Arrays.asList(commandLine))
+    }
+
     abstract protected def doParse(Collection<String> tokens) throws ArgumentsException
 
     Argument getArgument(String name) {
