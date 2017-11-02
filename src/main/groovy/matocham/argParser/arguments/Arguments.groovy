@@ -13,7 +13,12 @@ abstract class Arguments {
         arguments.add(argument)
     }
 
-    abstract def parse(String commandLine) throws ArgumentsException
+    def parse(String commandLine) throws ArgumentsException{
+        arguments = []
+        doParse(commandLine)
+    }
+
+    abstract protected def doParse(String commandLine) throws ArgumentsException
 
     Argument getArgument(String name) {
         arguments.find { it.getName() == name }

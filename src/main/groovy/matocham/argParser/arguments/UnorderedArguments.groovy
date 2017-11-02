@@ -5,7 +5,7 @@ import matocham.argParser.args.Argument
 
 class UnorderedArguments extends Arguments {
     @Override
-    def parse(String commandLine) throws ArgumentsException {
+    def doParse(String commandLine) throws ArgumentsException {
         arguments.sort({a,b -> (b.name <=> a.name) })
         Collection<String> tokens = tokenizeArguments(commandLine).findAll { !it.trim().isEmpty() }
         tokens.each { token ->
