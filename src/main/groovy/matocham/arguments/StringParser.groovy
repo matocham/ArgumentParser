@@ -1,10 +1,7 @@
-package matocham.argParser.parser
+package matocham.arguments
 
-import matocham.argParser.exceptions.ArgumentsException
-import matocham.argParser.args.Argument
-import matocham.argParser.arguments.Arguments
-import matocham.argParser.arguments.OrderedArguments
-import matocham.argParser.arguments.UnorderedArguments
+import matocham.exceptions.ArgumentsException
+import matocham.args.Argument
 
 import java.util.regex.Pattern
 
@@ -48,7 +45,7 @@ class StringParser extends Parser {
         return arguments
     }
 
-    Argument parseArgument(String stringToParse) {
+    private Argument parseArgument(String stringToParse) {
         def classDefinition = stringToParse.find(CLASS_DEF_PATTERN).trim()
         def argument = getArgumentFromString(classDefinition)
 
@@ -57,17 +54,10 @@ class StringParser extends Parser {
             throw new ParseException("Name and delimiter can't contain / character")
         }
         def name = nameAndDelimiter[0].trim()
-        checkNameValue(name)
 
         argument.setName(name)
         if (nameAndDelimiter.length == 2) {
             def delimiter = nameAndDelimiter[1].trim()
-            if (delimiter.length() != 1) {
-                throw new ParseException("Delimiter should contain only one character!")
-            }
-            if (delimiter == '_') {
-                delimiter = ' '
-            }
             argument.delimiter = delimiter
         }
 

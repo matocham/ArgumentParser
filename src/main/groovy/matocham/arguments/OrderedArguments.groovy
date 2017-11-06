@@ -1,12 +1,12 @@
-package matocham.argParser.arguments
+package matocham.arguments
 
-import matocham.argParser.args.Argument
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.args.Argument
+import matocham.exceptions.ArgumentsException
 
 class OrderedArguments extends Arguments {
 
     @Override
-    def doParse(Collection<String> tokens) throws ArgumentsException {
+    protected def doParse(Collection<String> tokens) throws ArgumentsException {
         int tokenIndex = 0
         for (def i = 0; i < arguments.size(); i++) {
             Argument arg = arguments[i]

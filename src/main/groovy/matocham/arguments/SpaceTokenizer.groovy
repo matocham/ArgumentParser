@@ -1,6 +1,6 @@
-package matocham.argParser.arguments
+package matocham.arguments
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.exceptions.ArgumentsException
 
 class SpaceTokenizer implements Tokenizer{
     private static def ESCAPED_PATTERN = ~/(".*")|('.*')/

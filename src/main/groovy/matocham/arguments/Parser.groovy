@@ -1,11 +1,9 @@
-package matocham.argParser.parser
+package matocham.arguments
 
-import matocham.argParser.args.Argument
-import matocham.argParser.arguments.Arguments
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.args.Argument
+import matocham.exceptions.ArgumentsException
 
 abstract class Parser {
-    private static def FORBIDDEN_NAME_CHARACTERS = ["\$", " ", "\t", "\n", "/"]
 
     private static Properties lookup = new Properties()
 
@@ -35,13 +33,5 @@ abstract class Parser {
 
     private static String getFromLookup(String value) {
         return lookup.getProperty(value)
-    }
-
-    protected def checkNameValue(String name) {
-        FORBIDDEN_NAME_CHARACTERS.each {
-            if (name.contains(it)) {
-                throw new ParseException("Name can't contain '$it' character");
-            }
-        }
     }
 }

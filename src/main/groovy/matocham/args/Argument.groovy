@@ -1,8 +1,10 @@
-package matocham.argParser.args
+package matocham.args
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.arguments.ParseException
+import matocham.exceptions.ArgumentsException
 
 abstract class Argument<T> {
+    private static def FORBIDDEN_NAME_CHARACTERS = ["\$", " ", "\t", "\n", "/"]
     private static def STARTING_LONG_PATTERN = /^--/
     private static def STARTING_SHORT_PATTERN = /^-/
     public static final String ALL_CHARS_REGEX = ".*"
@@ -19,11 +21,12 @@ abstract class Argument<T> {
         argValue = stripDashes(argValue)
         checkDelimiter(argValue)
         String value = getValueFromToken(argValue)
-        canAddMultivalued() // if all validations were completed successfully, check if this is first value or if second can be added
+        canAddMultivalued()
+        // if all validations were completed successfully, check if this is first value or if second can be added
         parseValue(value)
     }
 
-    private def canAddMultivalued(){
+    private def canAddMultivalued() {
         if (!multivalued && !value.isEmpty()) {
             throw new ArgumentsException("Can't add second value to argument, that is not multivalued ($name)")
         }
@@ -67,7 +70,33 @@ abstract class Argument<T> {
         return value
     }
 
-    def isWhiteSpaceDelimiter(){
+    def isWhiteSpaceDelimiter() {
         !delimiter.isEmpty() && delimiter.isAllWhitespace()
+    }
+
+    void setName(String name) {
+        checkNameValue(name)
+        this.name = name
+    }
+
+    void setDelimiter(String delimiter) {
+        if (delimiter.contains("/")) {
+            throw new ParseException("Delimiter can't contain / character!")
+        }
+        if (delimiter.length() > 1) {
+            throw new ParseException("Delimiter should contain not more than one character!")
+        }
+        if (delimiter == '_') {
+            delimiter = ' '
+        }
+        this.delimiter = delimiter
+    }
+
+    protected def checkNameValue(String name) {
+        FORBIDDEN_NAME_CHARACTERS.each {
+            if (name.contains(it)) {
+                throw new ArgumentsException("Name can't contain '$it' character");
+            }
+        }
     }
 }

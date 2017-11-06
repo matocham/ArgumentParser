@@ -1,4 +1,4 @@
-package matocham.argParser.exceptions
+package matocham.exceptions
 
 class ArgumentsException extends Exception{
     ArgumentsException(String message){

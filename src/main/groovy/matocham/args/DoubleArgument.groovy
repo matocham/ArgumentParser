@@ -1,9 +1,9 @@
-package matocham.argParser.args
+package matocham.args
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.exceptions.ArgumentsException
 
 class DoubleArgument extends Argument<Double> {
-    String min = Double.MIN_VALUE.toString(), max = Double.MAX_VALUE.toString()
+    String min = "-1000000", max = "1000000"
 
     private double minDouble, maxDouble
 
@@ -21,5 +21,9 @@ class DoubleArgument extends Argument<Double> {
     protected build() {
         minDouble = Double.parseDouble(min)
         maxDouble = Double.parseDouble(max)
+
+        if(minDouble > maxDouble){
+            throw new ArgumentsException("min ($minDouble) should be smaller than max ($maxDouble)")
+        }
     }
 }

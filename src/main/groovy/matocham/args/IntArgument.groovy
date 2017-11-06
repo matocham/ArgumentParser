@@ -1,6 +1,6 @@
-package matocham.argParser.args
+package matocham.args
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.exceptions.ArgumentsException
 
 class IntArgument extends Argument<Integer> {
     String min = Integer.MIN_VALUE.toString(), max = Integer.MAX_VALUE.toString()
@@ -20,5 +20,8 @@ class IntArgument extends Argument<Integer> {
     protected build() {
         minInt = Integer.valueOf(min)
         maxInt = Integer.valueOf(max)
+        if(minInt > maxInt){
+            throw new ArgumentsException("min ($minInt) should be smaller than max ($maxInt)")
+        }
     }
 }

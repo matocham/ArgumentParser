@@ -1,10 +1,7 @@
-package matocham.argParser.parser
+package matocham.arguments
 
 import groovy.json.JsonSlurper
-import matocham.argParser.args.Argument
-import matocham.argParser.arguments.Arguments
-import matocham.argParser.arguments.OrderedArguments
-import matocham.argParser.arguments.UnorderedArguments
+import matocham.args.Argument
 
 class JsonParser extends Parser {
     private static final def COMMON_FIELDS = ["name", "delimiter", "required", "multivalued", "type"]
@@ -34,15 +31,12 @@ class JsonParser extends Parser {
         return arguments
     }
 
-    def parseArgument(def argObject) {
+    private def parseArgument(def argObject) {
         def type = argObject.type
         def multivalued = argObject.multivalued ?: false
         def required = argObject.required ?: false
         def name = argObject.name
         def delimiter = argObject.delimiter ?: ""
-
-        checkNameValue(name)
-        delimiter = preprocesDelimiter(delimiter)
 
         Map constructorArguments = [:]
         argObject.each { key, val ->
@@ -56,18 +50,5 @@ class JsonParser extends Parser {
         argument.required = required
         argument.delimiter = delimiter
         return argument
-    }
-
-    private String preprocesDelimiter(String delimiter) {
-        if (delimiter.length() > 1 || delimiter.contains("/")) {
-            throw new ParseException("Delimiter should contain only one character!")
-        }
-        if (delimiter == "/") {
-            throw new ParseException("Delimiter can't contain / character!")
-        }
-        if (delimiter == '_') {
-            delimiter = ' '
-        }
-        delimiter
     }
 }

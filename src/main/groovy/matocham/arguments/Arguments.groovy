@@ -1,7 +1,7 @@
-package matocham.argParser.arguments
+package matocham.arguments
 
-import matocham.argParser.args.Argument
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.args.Argument
+import matocham.exceptions.ArgumentsException
 
 abstract class Arguments {
     List<Argument> arguments = []

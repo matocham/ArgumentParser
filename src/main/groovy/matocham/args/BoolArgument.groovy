@@ -1,6 +1,6 @@
-package matocham.argParser.args
+package matocham.args
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.exceptions.ArgumentsException
 
 class BoolArgument extends Argument<Boolean> {
     @Override

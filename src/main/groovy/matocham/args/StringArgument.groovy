@@ -1,6 +1,6 @@
-package matocham.argParser.args
+package matocham.args
 
-import matocham.argParser.exceptions.ArgumentsException
+import matocham.exceptions.ArgumentsException
 
 import java.util.regex.Pattern
 
@@ -14,7 +14,7 @@ class StringArgument extends Argument<String> {
     @Override
     def parseValue(String stringArgument) throws ArgumentsException {
         if (stringArgument.length() > valueMaxLength) {
-            throw new ArgumentsException("Argument '$name'='$stringArgument' is too long")
+            throw new ArgumentsException("Argument '$name'='$stringArgument' is too long (max $valueMaxLength length)")
         }
         if (!stringArgument.matches(valuePattern)) {
             throw new ArgumentsException("Argument $name does not match pattern ${pattern.toString()}")
