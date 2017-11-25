@@ -66,7 +66,7 @@ abstract class Argument<T> {
         }
     }
 
-    List<String> getValue() {
+    List<T> getValue() {
         return value
     }
 

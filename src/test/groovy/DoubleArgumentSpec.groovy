@@ -14,13 +14,13 @@ class DoubleArgumentSpec extends Specification {
 
     def "should build constraints"() {
         setup:
-        DoubleArgument argument = new DoubleArgument([min: "20", max: "120"])
+        DoubleArgument argument = new DoubleArgument([min: "20.2", max: "120"])
 
         when:
         argument.build()
 
         then:
-        argument.minDouble == 20
+        argument.minDouble == 20.2
         argument.maxDouble == 120
     }
 

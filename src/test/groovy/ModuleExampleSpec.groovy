@@ -4,8 +4,9 @@ import matocham.arguments.Parser
 import matocham.arguments.StringParser
 import spock.lang.Specification
 
+// those are module tests!
 class ModuleExampleSpec extends Specification {
-    def "perform basic module test"() {
+    def "should parse command line provided as string from arguments build from string"() {
         setup:
         StringParser parser = new StringParser("productId/_[string()]*! withShipping[bool]! quantity/=[int(min=10,max=20)]*! price/_[double(max=99.99)] >")
         when:
@@ -19,7 +20,7 @@ class ModuleExampleSpec extends Specification {
         arguments.getArgument("price")?.value == [55.67]
     }
 
-    def "perform basic module test with arguments array"() {
+    def "should parse command line provided as string array from arguments build from string"() {
         setup:
         StringParser parser = new StringParser("productId/_[string()]*! withShipping[bool]! quantity/=[int(min=10,max=20)]*! price/_[double(max=99.99)] >")
         String[] cmdArguments = ["--productId", "'12345x'", "--withShipping", "--quantity=12", "--price", "55.67"]
@@ -34,7 +35,7 @@ class ModuleExampleSpec extends Specification {
         arguments.getArgument("price")?.value == [55.67]
     }
 
-    def "perform basic module test with arguments array and Json file"() {
+    def "should parse command line provided as string array from arguments build from json file"() {
         setup:
         Parser parser = new JsonParser("arguments.json")
         String[] cmdArguments = ["--productId", "'12345x'", "--withShipping", "--quantity=12", "--price", "55.67"]
